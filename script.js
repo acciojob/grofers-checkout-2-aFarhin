@@ -1,18 +1,14 @@
-//your code here
+describe('example to-do app', () => {
+  it('check number of prices', () => {
+    cy.get('[data-ns-test="prices"]').should('have.length', 3);
+  });
 
-// Get all the prices listed in the HTML table
-const prices = document.querySelectorAll('[data-ns-test="prices"]');
+  it('check total prices from table equals grand total', () => {
+    let totalPrice = 0;
+    cy.get('[data-ns-test="prices"]').each(price => {
+      totalPrice += parseFloat(price.text());
+    });
 
-// Calculate the sum of all prices
-let totalPrice = 0;
-prices.forEach(price => {
-  totalPrice += parseFloat(price.textContent);
+    cy.get('[data-ns-test="grandTotal"]').should('have.text', totalPrice.toFixed(2));
+  });
 });
-
-// Create a new row in the HTML table to display the total price
-const table = document.querySelector('table');
-const newRow = table.insertRow();
-const newCell = newRow.insertCell();
-newCell.setAttribute('data-ns-test', 'grandTotal');
-newCell.textContent = totalPrice.toFixed(2);
-
